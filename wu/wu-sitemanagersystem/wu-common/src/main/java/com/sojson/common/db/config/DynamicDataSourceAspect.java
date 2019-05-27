@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.sojson.common.db.DynamicDataSource;
 import com.sojson.common.utils.LoggerUtils;
+import com.sojson.common.utils.PropertiesFileUtil;
 
 import java.lang.reflect.Method;
  
@@ -27,7 +28,9 @@ public class DynamicDataSourceAspect {
     public void afterSwitchDS(JoinPoint point){
         System.out.println("清除当前数据源"+DynamicDataSource.getDataSource());
 		LoggerUtils.fmtDebug(getClass(), "afterSwitchDS 清除当前数据源"+DynamicDataSource.getDataSource());	                
-        DynamicDataSource.clearDataSource();
+		String property=PropertiesFileUtil.getInstance().get("domain.www");
+		LoggerUtils.fmtDebug(getClass(), "dddddddddproperty=="+property);	
+		DynamicDataSource.clearDataSource();
     }
 	
     //使用DS注解动态切换
