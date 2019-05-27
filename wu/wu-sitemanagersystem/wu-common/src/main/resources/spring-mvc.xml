@@ -35,6 +35,8 @@
 	<bean name="springContextUtil" class="com.sojson.common.utils.SpringContextUtil"
 		scope="singleton"></bean>
 
+    <bean id="zhengAdminUtil" class="com.sojson.common.utils.ZhengAdminUtil"></bean>
+
 	<!-- 这个一定得有，注意了，如果其他配置也有需要这个，已经配置了，那不必了 -->
 
 	<bean
