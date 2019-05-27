@@ -89,6 +89,7 @@ public class SiteController extends BaseController {
 	 */
 	@RequestMapping(value="test/{name}", method=RequestMethod.GET)
 	public ModelAndView getEmployeeNegotiating(@PathVariable String name, ModelMap model) {
+		LoggerUtils.fmtDebug(getClass(), "test 测试动态后缀");		
 		return new ModelAndView("site/permission","userList",getStudents());
 	}
 	

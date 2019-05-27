@@ -12,6 +12,7 @@ import com.sojson.common.dao.UPermissionMapper;
 import com.sojson.common.dao.URolePermissionMapper;
 import com.sojson.common.dao.UUserMapper;
 import com.sojson.common.dao.UUserRoleMapper;
+import com.sojson.common.db.config.DS;
 import com.sojson.common.model.UPermission;
 import com.sojson.common.model.URolePermission;
 import com.sojson.common.utils.LoggerUtils;
@@ -107,7 +108,8 @@ public class SiteServiceImpl extends BaseMybatisDao<UPermissionMapper> implement
 		}
 		return resultMap;
 	}
-
+	//使用数据源1查询
+    @DS("masterDataSource")
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pagination<UPermission> findPage(Map<String,Object> resultMap, Integer pageNo,

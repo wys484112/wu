@@ -12,12 +12,14 @@
 	<!-- 自动扫描(自动注入) -->
 	<context:component-scan base-package="com.sojson.*.service;com.sojson.*.*.service;com.huawei.*.service;com.huawei.*.*.service"/>
 	<context:component-scan base-package="com.sojson.common.timer"/>
+	<context:component-scan base-package="com.sojson.common.db.config.*"/>
 	
 	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
     	<property name="resultSetLogEnabled" value="true" />
 	</bean>
 	<!-- 配置数据源 -->
-	<bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <!-- 主库数据源 -->	
+	<bean name="masterDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 <!--		<property name="driverClassName" value="${jdbc.driverClassName}" /> -->
 		<property name="url" value="${jdbc.url}" /> 
 		<property name="username" value="${jdbc.username}" /> 
@@ -48,7 +50,52 @@
 		<!-- <property name="filters" value="stat" /> -->
 <!--		<property name="filters" value="mergeStat" />-->
 	</bean>
+	
+    <!-- 从库数据源 -->
+	<bean name="slaveDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+<!--		<property name="driverClassName" value="${jdbc.driverClassName}" /> -->
+		<property name="url" value="${jdbc.url}" /> 
+		<property name="username" value="${jdbc.username}" /> 
+		<property name="password" value="${jdbc.password}" /> 
+		<property name="initialSize" value="${jdbc.initialSize}" /> 
+	    <property name="minIdle" value="${jdbc.minIdle}" /> 
+	    <property name="maxActive" value="${jdbc.maxActive}" /> 
+	    <property name="maxWait" value="${jdbc.maxWait}" /> 
+	    <property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" /> 
+	    <property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" /> 
+	    <property name="validationQuery" value="${jdbc.validationQuery}" /> 
+	    <property name="testWhileIdle" value="${jdbc.testWhileIdle}" /> 
+	    <property name="testOnBorrow" value="${jdbc.testOnBorrow}" /> 
+	    <property name="testOnReturn" value="${jdbc.testOnReturn}" /> 
+	    <property name="removeAbandoned" value="${jdbc.removeAbandoned}" /> 
+	    <property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}" /> 
+<!--	    <property name="logAbandoned" value="${jdbc.logAbandoned}" /> -->
+	    <property name="filters" value="${jdbc.filters}" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" />
+		<property name="proxyFilters">
+	        <list>
+	            <ref bean="log-filter"/>
+	        </list>
+	    </property>
 
+		<!-- 监控数据库 -->
+		<!-- <property name="filters" value="stat" /> -->
+<!--		<property name="filters" value="mergeStat" />-->
+	</bean>
+	
+    <!-- 动态数据源 -->
+    <bean id="dataSource" class="com.sojson.common.db.DynamicDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <!-- 可配置多个数据源 -->
+                <entry value-ref="masterDataSource" key="masterDataSource"></entry>
+                <entry value-ref="slaveDataSource" key="slaveDataSource"></entry>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="masterDataSource"></property>
+    </bean>
+    	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
@@ -92,6 +139,17 @@
 			<tx:method name="*"  read-only="true"/>
 		</tx:attributes>
 	</tx:advice>
+	
+	
+<!-- 开启注解配置 -->
+		<context:annotation-config />
+ 
+		<!-- 开启注解Aop -->
+		<aop:aspectj-autoproxy proxy-target-class="true"/>
+ 
+		<!-- 配置数据库注解aop -->
+		<bean id="dataSourceAspect" class="com.sojson.common.db.config.DynamicDataSourceAspect" />
+	
  	<!-- AOP配置--> 
 	<aop:config>
 		<aop:pointcut id="myPointcut"
