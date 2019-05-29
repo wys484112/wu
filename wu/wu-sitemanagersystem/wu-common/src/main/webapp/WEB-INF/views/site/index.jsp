@@ -8,6 +8,8 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
+
+String url = request.getScheme()+"://"+ request.getServerName()+request.getRequestURL()+"?"+request.getQueryString();
 %>
 
 <!DOCTYPE html>
@@ -88,7 +90,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					},1000);
 				},'json');
 			}
-			</shiro:hasPermission>		
+			</shiro:hasPermission>	
+						
 		</script>			
 	</head>
 	<body data-target="#one" data-spy="scroll">
@@ -97,13 +100,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<jsp:param name="index" value="4"/>		
 		</jsp:include>
 
-    <a href="?lang=zh_CN"><spring:message code="language.cn" /></a>
-    <a href="?lang=en_US"><spring:message code="language.en" /></a>
-    <h1>
-        <!-- 将配置文件中的内容读取 -->
-        <spring:message code="welcome" />
-    </h1>
-    当前语言: ${window.location.href}
+
      			
 		<div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
 			<div class="row">
@@ -113,7 +110,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 				</jsp:include>					
 				<div class="col-md-10">
-					<h2>工地列表</h2>
+				
+				<h1>
+					<!-- 将配置文件中的内容读取 -->
+					<spring:message code="welcome" />
+				</h1>
+				当前url:'<%=url%>'
+
+
+				<h2>工地列表</h2>
 					<hr>
 					<form method="post" action="" id="formId" class="form-inline">
 						<div clss="well">
