@@ -1,5 +1,50 @@
 <#macro top index>
+<#import "./spring_4_2_5_release.ftl" as spring/>
 <script baseUrl="${basePath}" src="${basePath}/js/user.login.js"></script>
+<script>
+	
+<#--中英文语言切换-->	
+<#--
+			语言切换
+			当前页面刷新，
+			通过正则表达式删除多余的语言参数
+			添加参数 lang=en_US 或者lang=zh_CN
+			
+			类似如下url
+			http://localhost:8080/site.management/site/index.shtml?lang=zh_CN			
+			-->
+	function js_lang_cn_method() {
+		var lang_url = window.location.href
+				.replace(/&*lang=(zh_CN|en_US)/g, "");
+		lang_url = lang_url.replace(/\?$/g, "");
+		var index = lang_url.search(/\?/g);
+<#--
+		layer.msg(lang_url);
+		layer.msg(index);
+-->			
+		if (index != -1) {
+			window.location.href = lang_url.concat("&lang=zh_CN");
+		} else {
+			window.location.href = lang_url.concat("?lang=zh_CN");
+		}
+	}
+	function js_lang_en_method() {
+		var lang_url = window.location.href
+				.replace(/&*lang=(zh_CN|en_US)/g, "");
+		lang_url = lang_url.replace(/\?$/g, "");
+		var index = lang_url.search(/\?/g);
+
+<#--
+		layer.msg(lang_url);
+		layer.msg(index);
+-->	
+		if (index != -1) {
+			window.location.href = lang_url.concat("&lang=en_US");
+		} else {
+			window.location.href = lang_url.concat("?lang=en_US");
+		}
+	}
+</script>
 <div class="navbar navbar-inverse navbar-fixed-top animated fadeInDown" style="z-index: 101;height: 41px;">
 	  
       <div class="container" style="padding-left: 0px; padding-right: 0px;">
@@ -82,6 +127,8 @@
 							        				       
 							        				       			        				       			        				       
 	          </ul>
+			  <a href="javascript:void(0);" onclick="js_lang_cn_method();" style="color:#fff; font-size: 13px; padding:10px" class="pull-right"><@spring.message code="language.cn" /></a>
+			  <a href="javascript:void(0);" onclick="js_lang_en_method();" style="color:#fff; font-size: 13px; padding:10px 3px" class="pull-right"><@spring.message code="language.en" /></a>	 	          
 	           <ul class="nav navbar-nav  pull-right" >
 				<li class="dropdown ${(index==10)?string('active','')}" style="color:#fff;">
 					<a aria-expanded="false" aria-haspopup="true"  role="button" data-toggle="dropdown"  

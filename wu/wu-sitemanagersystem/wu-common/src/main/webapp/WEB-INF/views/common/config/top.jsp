@@ -27,9 +27,10 @@
 				.replace(/&*lang=(zh_CN|en_US)/g, "");
 		lang_url = lang_url.replace(/\?$/g, "");
 		var index = lang_url.search(/\?/g);
-
+		<%--
 		layer.msg(lang_url);
 		layer.msg(index);
+		--%>		
 		if (index != -1) {
 			window.location.href = lang_url.concat("&lang=zh_CN");
 		} else {
@@ -42,8 +43,10 @@
 		lang_url = lang_url.replace(/\?$/g, "");
 		var index = lang_url.search(/\?/g);
 
+		<%--
 		layer.msg(lang_url);
 		layer.msg(index);
+		--%>
 		if (index != -1) {
 			window.location.href = lang_url.concat("&lang=en_US");
 		} else {

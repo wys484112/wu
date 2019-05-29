@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<#import "../common/config/spring_4_2_5_release.ftl" as spring/>
 <html lang="zh-cn">
 	<head>
 		<meta charset="utf-8" />
@@ -86,6 +87,11 @@
 				<#--引入左侧菜单-->
 				<@_left.role 3/>
 				<div class="col-md-10">
+				<h1>
+					<!-- 将配置文件中的内容读取 -->
+					<@spring.message code="welcome" />
+				</h1>
+								
 					<h2>权限列表</h2>
 					<hr>
 					<form method="post" action="" id="formId" class="form-inline">
