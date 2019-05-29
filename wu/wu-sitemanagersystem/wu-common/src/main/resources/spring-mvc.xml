@@ -235,7 +235,7 @@
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<!-- 表示多语言配置文件在根路径下，以language开头的文件 -->
-		<property name="basename" value="classpath:language" />
+		<property name="basename" value="classpath:language/language" />
 		<property name="useCodeAsDefaultMessage" value="true" />
 	</bean>
 	<!-- 变量改变拦截器 -->
