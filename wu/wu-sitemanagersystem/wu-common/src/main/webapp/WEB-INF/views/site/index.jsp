@@ -1,6 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions"  prefix="fn"%> 
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <%--shiro 标签 --%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>  
 <%
@@ -92,9 +94,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<body data-target="#one" data-spy="scroll">
 		<%--引入头部<@_top.top 3/>--%>
 		<jsp:include page="../common/config/top.jsp" flush="true">
-		<jsp:param name="index" value="4"/>
-		
+		<jsp:param name="index" value="4"/>		
 		</jsp:include>
+
+    <a href="?lang=zh_CN"><spring:message code="language.cn" /></a>
+    <a href="?lang=en_US"><spring:message code="language.en" /></a>
+    <h1>
+        <!-- 将配置文件中的内容读取 -->
+        <spring:message code="welcome" />
+    </h1>
+    当前语言: ${window.location.href}
+     			
 		<div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
 			<div class="row">
 				<%--引入左侧菜单--%>
